@@ -5,106 +5,106 @@
  */
 var path = require('path'),
   mongoose = require('mongoose'),
-  Article = mongoose.model('Article'),
+  Job = mongoose.model('Job'),
   errorHandler = require(path.resolve('./modules/core/server/controllers/errors.server.controller'));
 
 /**
- * Create a article
+ * Create a job
  */
 exports.create = function (req, res) {
-  var article = new Article(req.body);
-  article.user = req.user;
+  var job = new Job(req.body);
+  job.user = req.user;
 
-  article.save(function (err) {
+  job.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(job);
     }
   });
 };
 
 /**
- * Show the current article
+ * Show the current job
  */
 exports.read = function (req, res) {
-  res.json(req.article);
+  res.json(req.job);
 };
 
 /**
- * Update a article
+ * Update a job
  */
 exports.update = function (req, res) {
-  var article = req.article;
+  var job = req.job;
 
-  article.title = req.body.title;
-  article.content = req.body.content;
+  job.title = req.body.title;
+  job.content = req.body.content;
 
-  article.save(function (err) {
+  job.save(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(job);
     }
   });
 };
 
 /**
- * Delete an article
+ * Delete an job
  */
 exports.delete = function (req, res) {
-  var article = req.article;
+  var job = req.job;
 
-  article.remove(function (err) {
+  job.remove(function (err) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(article);
+      res.json(job);
     }
   });
 };
 
 /**
- * List of Articles
+ * List of jobs
  */
 exports.list = function (req, res) {
-  Article.find().sort('-created').populate('user', 'displayName').exec(function (err, articles) {
+  Job.find().sort('-created').populate('user', 'displayName').exec(function (err, jobs) {
     if (err) {
       return res.status(400).send({
         message: errorHandler.getErrorMessage(err)
       });
     } else {
-      res.json(articles);
+      res.json(jobs);
     }
   });
 };
 
 /**
- * Article middleware
+ * Job middleware
  */
-exports.articleByID = function (req, res, next, id) {
+exports.jobByID = function (req, res, next, id) {
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).send({
-      message: 'Article is invalid'
+      message: 'Job is invalid'
     });
   }
 
-  Article.findById(id).populate('user', 'displayName').exec(function (err, article) {
+  Job.findById(id).populate('user', 'displayName').exec(function (err, job) {
     if (err) {
       return next(err);
-    } else if (!article) {
+    } else if (!job) {
       return res.status(404).send({
-        message: 'No article with that identifier has been found'
+        message: 'No job with that identifier has been found'
       });
     }
-    req.article = article;
+    req.job = job;
     next();
   });
 };
