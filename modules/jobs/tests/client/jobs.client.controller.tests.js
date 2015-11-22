@@ -1,17 +1,17 @@
 'use strict';
 
 (function () {
-  // Articles Controller Spec
-  describe('Articles Controller Tests', function () {
+  // Jobs Controller Spec
+  describe('Jobs Controller Tests', function () {
     // Initialize global variables
-    var ArticlesController,
+    var JobsController,
       scope,
       $httpBackend,
       $stateParams,
       $location,
       Authentication,
-      Articles,
-      mockArticle;
+      Jobs,
+      mockJob;
 
     // The $resource service augments the response object with methods for updating and deleting the resource.
     // If we were to use the standard toEqual matcher, our tests would fail because the test values would not match
@@ -38,7 +38,7 @@
     // The injector ignores leading and trailing underscores here (i.e. _$httpBackend_).
     // This allows us to inject a service but then attach it to a variable
     // with the same name as the service.
-    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Articles_) {
+    beforeEach(inject(function ($controller, $rootScope, _$location_, _$stateParams_, _$httpBackend_, _Authentication_, _Jobs_) {
       // Set a new global scope
       scope = $rootScope.$new();
 
@@ -47,12 +47,12 @@
       $httpBackend = _$httpBackend_;
       $location = _$location_;
       Authentication = _Authentication_;
-      Articles = _Articles_;
+      Jobs = _Jobs_;
 
-      // create mock article
-      mockArticle = new Articles({
+      // create mock job
+      mockJob = new Jobs({
         _id: '525a8422f6d0f87f0e407a33',
-        title: 'An Article about MEAN',
+        title: 'An Job about MEAN',
         content: 'MEAN rocks!'
       });
 
@@ -61,62 +61,62 @@
         roles: ['user']
       };
 
-      // Initialize the Articles controller.
-      ArticlesController = $controller('ArticlesController', {
+      // Initialize the Jobs controller.
+      JobsController = $controller('JobsController', {
         $scope: scope
       });
     }));
 
-    it('$scope.find() should create an array with at least one article object fetched from XHR', inject(function (Articles) {
-      // Create a sample articles array that includes the new article
-      var sampleArticles = [mockArticle];
+    it('$scope.find() should create an array with at least one job object fetched from XHR', inject(function (Jobs) {
+      // Create a sample jobs array that includes the new job
+      var sampleJobs = [mockJob];
 
       // Set GET response
-      $httpBackend.expectGET('api/articles').respond(sampleArticles);
+      $httpBackend.expectGET('api/jobs').respond(sampleJobs);
 
       // Run controller functionality
       scope.find();
       $httpBackend.flush();
 
       // Test scope value
-      expect(scope.articles).toEqualData(sampleArticles);
+      expect(scope.jobs).toEqualData(sampleJobs);
     }));
 
-    it('$scope.findOne() should create an array with one article object fetched from XHR using a articleId URL parameter', inject(function (Articles) {
+    it('$scope.findOne() should create an array with one job object fetched from XHR using a jobId URL parameter', inject(function (Jobs) {
       // Set the URL parameter
-      $stateParams.articleId = mockArticle._id;
+      $stateParams.jobId = mockJob._id;
 
       // Set GET response
-      $httpBackend.expectGET(/api\/articles\/([0-9a-fA-F]{24})$/).respond(mockArticle);
+      $httpBackend.expectGET(/api\/jobs\/([0-9a-fA-F]{24})$/).respond(mockJob);
 
       // Run controller functionality
       scope.findOne();
       $httpBackend.flush();
 
       // Test scope value
-      expect(scope.article).toEqualData(mockArticle);
+      expect(scope.job).toEqualData(mockJob);
     }));
 
     describe('$scope.create()', function () {
-      var sampleArticlePostData;
+      var sampleJobPostData;
 
       beforeEach(function () {
-        // Create a sample article object
-        sampleArticlePostData = new Articles({
-          title: 'An Article about MEAN',
+        // Create a sample job object
+        sampleJobPostData = new Jobs({
+          title: 'An Job about MEAN',
           content: 'MEAN rocks!'
         });
 
         // Fixture mock form input values
-        scope.title = 'An Article about MEAN';
+        scope.title = 'An Job about MEAN';
         scope.content = 'MEAN rocks!';
 
         spyOn($location, 'path');
       });
 
-      it('should send a POST request with the form input values and then locate to new object URL', inject(function (Articles) {
+      it('should send a POST request with the form input values and then locate to new object URL', inject(function (Jobs) {
         // Set POST response
-        $httpBackend.expectPOST('api/articles', sampleArticlePostData).respond(mockArticle);
+        $httpBackend.expectPOST('api/jobs', sampleJobPostData).respond(mockJob);
 
         // Run controller functionality
         scope.create(true);
@@ -126,13 +126,13 @@
         expect(scope.title).toEqual('');
         expect(scope.content).toEqual('');
 
-        // Test URL redirection after the article was created
-        expect($location.path.calls.mostRecent().args[0]).toBe('articles/' + mockArticle._id);
+        // Test URL redirection after the job was created
+        expect($location.path.calls.mostRecent().args[0]).toBe('jobs/' + mockJob._id);
       }));
 
       it('should set scope.error if save error', function () {
         var errorMessage = 'this is an error message';
-        $httpBackend.expectPOST('api/articles', sampleArticlePostData).respond(400, {
+        $httpBackend.expectPOST('api/jobs', sampleJobPostData).respond(400, {
           message: errorMessage
         });
 
@@ -145,25 +145,25 @@
 
     describe('$scope.update()', function () {
       beforeEach(function () {
-        // Mock article in scope
-        scope.article = mockArticle;
+        // Mock job in scope
+        scope.job = mockJob;
       });
 
-      it('should update a valid article', inject(function (Articles) {
+      it('should update a valid job', inject(function (Jobs) {
         // Set PUT response
-        $httpBackend.expectPUT(/api\/articles\/([0-9a-fA-F]{24})$/).respond();
+        $httpBackend.expectPUT(/api\/jobs\/([0-9a-fA-F]{24})$/).respond();
 
         // Run controller functionality
         scope.update(true);
         $httpBackend.flush();
 
         // Test URL location to new object
-        expect($location.path()).toBe('/articles/' + mockArticle._id);
+        expect($location.path()).toBe('/jobs/' + mockJob._id);
       }));
 
-      it('should set scope.error to error response message', inject(function (Articles) {
+      it('should set scope.error to error response message', inject(function (Jobs) {
         var errorMessage = 'error';
-        $httpBackend.expectPUT(/api\/articles\/([0-9a-fA-F]{24})$/).respond(400, {
+        $httpBackend.expectPUT(/api\/jobs\/([0-9a-fA-F]{24})$/).respond(400, {
           message: errorMessage
         });
 
@@ -174,36 +174,36 @@
       }));
     });
 
-    describe('$scope.remove(article)', function () {
+    describe('$scope.remove(job)', function () {
       beforeEach(function () {
-        // Create new articles array and include the article
-        scope.articles = [mockArticle, {}];
+        // Create new jobs array and include the job
+        scope.jobs = [mockJob, {}];
 
         // Set expected DELETE response
-        $httpBackend.expectDELETE(/api\/articles\/([0-9a-fA-F]{24})$/).respond(204);
+        $httpBackend.expectDELETE(/api\/jobs\/([0-9a-fA-F]{24})$/).respond(204);
 
         // Run controller functionality
-        scope.remove(mockArticle);
+        scope.remove(mockJob);
       });
 
-      it('should send a DELETE request with a valid articleId and remove the article from the scope', inject(function (Articles) {
-        expect(scope.articles.length).toBe(1);
+      it('should send a DELETE request with a valid jobId and remove the job from the scope', inject(function (Jobs) {
+        expect(scope.jobs.length).toBe(1);
       }));
     });
 
     describe('scope.remove()', function () {
       beforeEach(function () {
         spyOn($location, 'path');
-        scope.article = mockArticle;
+        scope.job = mockJob;
 
-        $httpBackend.expectDELETE(/api\/articles\/([0-9a-fA-F]{24})$/).respond(204);
+        $httpBackend.expectDELETE(/api\/jobs\/([0-9a-fA-F]{24})$/).respond(204);
 
         scope.remove();
         $httpBackend.flush();
       });
 
-      it('should redirect to articles', function () {
-        expect($location.path).toHaveBeenCalledWith('articles');
+      it('should redirect to jobs', function () {
+        expect($location.path).toHaveBeenCalledWith('jobs');
       });
     });
   });
