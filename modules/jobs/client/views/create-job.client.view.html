@@ -12,10 +12,33 @@
             <p class="help-block error-text" ng-message="required">Job title is required.</p>
           </div>
         </div>
-        <div class="form-group">
-          <label for="content">Content</label>
-          <textarea name="content" ng-model="content" id="content" class="form-control" cols="30" rows="10" placeholder="Content"></textarea>
+        
+        <div class="form-group" show-errors>
+          <label for="company">Company</label>
+          <input name="title" type="text" ng-model="company" id="company" class="form-control" placeholder="Company" required>
+          <div ng-messages="jobForm.company.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">Please enter a company name.</p>
+          </div>
         </div>
+        
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea name="description" ng-model="description" id="description" class="form-control" cols="30" rows="10" placeholder="Description"></textarea>
+        </div>
+        
+        <div class="form-group">
+          <label for="requirements">Requirements</label>
+          <textarea name="requirements" ng-model="requirements" id="requirements" class="form-control" cols="30" rows="10" placeholder="Requirements"></textarea>
+        </div>
+        
+        <div class="form-group" show-errors>
+          <label for="hourly_wage">Hourly Wage</label>
+          <input name="hourly_wage" type="text" ng-model="hourly_wage" id="hourly_wage" class="form-control" placeholder="Hourly Wage" required>
+          <div ng-messages="jobForm.hourly_wage.$error" role="alert">
+            <p class="help-block error-text" ng-message="required">An hourly wage is required.</p>
+          </div>
+        </div>
+        
         <div class="form-group">
           <input type="submit" class="btn btn-default">
         </div>
