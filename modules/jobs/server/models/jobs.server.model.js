@@ -14,17 +14,17 @@ var JobSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  copmany: {
-    type: String,
-    default: '',
-    trim: true,
-    required: 'Company name cannot be blank'
-  },
   title: {
     type: String,
     default: '',
     trim: true,
     required: 'Title cannot be blank'
+  },
+  copmany: {
+    type: String,
+    default: '',
+    trim: true
+//    required: 'Company name cannot be blank'
   },
   description: {
     type: String,
