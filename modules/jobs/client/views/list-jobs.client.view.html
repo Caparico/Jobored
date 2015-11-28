@@ -2,6 +2,7 @@
   <div class="page-header">
     <h1>Jobs</h1>
   </div>
+<!--
   <div class="list-group">
     <a ng-repeat="job in jobs" ui-sref="jobs.view({jobId: job._id})" class="list-group-item">
       <small class="list-group-item-text">
@@ -14,7 +15,26 @@
       <p class="list-group-item-text" ng-bind="job.content"></p>
     </a>
   </div>
+-->
+ 
+ <table class="table table-striped">
+    <tr>
+        <th>Job Title</th>
+        <th>Company</th>
+        <th>Hourly Wage</th>
+        <th>Date Listed</th>
+        <th>Created By</th>
+    </tr>
+    <tr data-ng-repeat="job in jobs">
+        <td><a ui-sref="jobs.view({jobId: job._id})">{{job.title}} - {{job.state}}</a></td>
+        <td>{{job.company}}</td>
+        <td>{{job.hourly_wage}}</td>
+        <td>{{job.created | date:'mediumDate'}}</td>
+        <td>{{job.user.displayName}}</td>
+    </tr>
+ </table>
+ 
   <div class="alert alert-warning text-center" ng-if="jobs.$resolved && !jobs.length">
     No jobs yet, why don't you <a ui-sref="jobs.create">create one</a>?
-  </div>
+  </div>  
 </section>

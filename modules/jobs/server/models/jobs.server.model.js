@@ -20,11 +20,11 @@ var JobSchema = new Schema({
     trim: true,
     required: 'Title cannot be blank'
   },
-  copmany: {
+  company: {
     type: String,
     default: '',
-    trim: true
-//    required: 'Company name cannot be blank'
+    trim: true,
+    required: 'Company name cannot be blank'
   },
   description: {
     type: String,
